@@ -290,6 +290,12 @@
             filter: brightness(1.06);
         }
         
+        .btn-kirim:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
         .modal-pembayaran {
             display: none;
             position: fixed;
@@ -527,6 +533,7 @@
                 <li><a href="index.html" class="nav-link-item">Home</a></li>
                 <li><a href="menu.html" class="nav-link-item">Menu</a></li>
                 <li><a href="order.html" class="nav-link-item active">Order</a></li>
+                <li><a href="tracking.html" class="nav-link-item">Track</a></li>
                 <li><a href="about.html" class="nav-link-item">About Us</a></li>
             </ul>
         </nav>
@@ -591,8 +598,9 @@
                 </label>
             </div>
 
-            <button class="btn-kirim" onclick="prosesPembayaran()">Proceed to Payment</button>
+            <button class="btn-kirim" id="btnProceed" onclick="prosesPembayaran()">Proceed to Payment</button>
 
+            <!-- Payment Instruction Modal -->
             <div class="modal-pembayaran" id="modalPembayaran">
                 <div class="modal-content-pay">
                     <h3 id="modalTitle" style="margin-top:0; color: var(--primary);">Payment Instructions</h3>
@@ -602,8 +610,21 @@
                     <button class="btn-close-modal" onclick="tutupModal()">Cancel</button>
                 </div>
             </div>
+
+            <!-- Success Modal -->
+            <div class="modal-pembayaran" id="modalSukses">
+                <div class="modal-content-pay">
+                    <div style="font-size: 52px; margin-bottom: 12px;">✅</div>
+                    <h3 style="margin: 0 0 10px 0; color: var(--primary);">Order Successfully Sent!</h3>
+                    <p style="font-size: 14px; color: #64748b; margin-bottom: 22px; line-height: 1.5;">
+                        Your Order ID will be sent via WhatsApp.<br> Please check your WhatsApp chat.
+                    </p>
+                    <button class="btn-kirim" onclick="tutupModalSukses()">OK</button>
+                </div>
+            </div>
         </div>
     </div>
+
     <footer class="footer-banner">
         <div class="footer-top-row">
             <div class="footer-col">
@@ -634,7 +655,7 @@
                 <div style="margin-top: 6px;">
                     <div class="footer-section-title">Company Website</div>
                     <a href="http://www.waypointports.com/" target="_blank" style="color: #38bdf8; text-decoration: none; font-size: 13px; font-weight: 500;">
-                        www.waypoint.com &rarr;
+                        www.waypoint.com →
                     </a>
                 </div>
             </div>
@@ -650,6 +671,9 @@
     <script>
         const HANDLING_FEE_IDR = 36000;
         const HANDLING_FEE_USD = 2.00;
+
+        // IMPORTANT: Replace with your Google Apps Script Web App URL
+        const URL_GOOGLE_SCRIPT = "https://script.google.com/macros/s/AKfycbz_HHRzirHhnFxsQ40AY5ys7J8w0_3whUYa_CiNPCWLwK8Q5dUYv2F4VYsofTHLEafd/exec";
 
         let keranjang = JSON.parse(localStorage.getItem('waypoint_cart')) || [];
         let totalIDR = 0;
@@ -716,7 +740,7 @@
                             <img src="${itemGroup.gambar}" alt="${itemGroup.nama}" style="width: 45px; height: 45px; object-fit: contain; border-radius: 8px; background: #f8fafc; padding: 3px; border: 1px solid #e2e8f0;">
                             <span>${itemGroup.nama}${qtyText} - Rp ${totalItemHargaIDR.toLocaleString('id-ID')} ($${totalItemHargaUSD.toFixed(2)})</span>
                         </div>
-                        <button onclick="hapusSatuItem('${namaAmanHapus}')" title="Reduce/Remove item" style="
+                        <button onclick="hapusSatuItem('${namaAmanHapus}')" title="Remove item" style="
                             background: transparent;
                             color: #ef4444;
                             border: none;
@@ -726,7 +750,6 @@
                             font-size: 16px;
                             font-weight: bold;
                             margin-left: 10px;
-                            transition: all 0.2s;
                         " onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='transparent'">✕</button>
                     `;
                     daftarItem.appendChild(li);
@@ -754,8 +777,8 @@
         }
 
         function prosesPembayaran() {
-            const nama = document.getElementById('nama').value;
-            const namaKapal = document.getElementById('nama-kapal').value;
+            const nama = document.getElementById('nama').value.trim();
+            const namaKapal = document.getElementById('nama-kapal').value.trim();
             const metode = document.querySelector('input[name="pembayaran"]:checked').value;
 
             if (!nama || !namaKapal || keranjang.length === 0) {
@@ -766,67 +789,72 @@
             const grandTotalIDR = totalIDR + HANDLING_FEE_IDR;
             const grandTotalUSD = totalUSD + HANDLING_FEE_USD;
 
+            // COD → go directly to confirmation
             if (metode === 'COD') {
                 konfirmasiDanKirimWA();
-            } else {
-                // Tampilkan modal + form upload bukti
-                document.getElementById('modalTitle').innerText = metode === 'QRIS' ? 'Payment via QRIS' : `${metode} Bank Transfer`;
+                return;
+            }
 
-                let content = `
-            <div class="payment-notice">
-                <span>⚠️</span>
-                <div><strong>Important:</strong> Setelah transfer, upload bukti pembayaran di bawah ini.</div>
-            </div>
-        `;
+            // Other methods → show payment modal
+            document.getElementById('modalTitle').innerText = metode === 'QRIS' ? 'Payment via QRIS' : `${metode} Bank Transfer`;
 
-                if (metode === 'QRIS') {
-                    content += `
-                <p style="margin-bottom:5px; font-size:12px; color:#475569;">Scan QRIS menggunakan E-Wallet / Mobile Banking:</p>
-                <img src="qris.jpeg" class="qris-img" alt="QRIS Code">
-            `;
-                } else {
-                    const noRek = metode === 'BCA' ? '9999999999' : '9999999999999';
-                    content += `
-                <div class="bank-info">
-                    <button class="btn-salin" onclick="navigator.clipboard.writeText('${noRek}'); alert('Account number copied!');">Copy</button>
-                    <p style="margin:0; font-size:11px; color:#64748b;">Account Number:</p>
-                    <p style="margin:4px 0 0 0; font-size:16px; font-weight:800; color:var(--primary);">${noRek}</p>
-                    <p style="margin:4px 0 0 0; font-size:11px; color:#64748b;">a.n Waypoint Store</p>
+            let content = `
+                <div class="payment-notice">
+                    <span>⚠️</span>
+                    <div><strong>Important:</strong> After completing the transfer, please upload your payment proof below.</div>
                 </div>
             `;
-                }
 
+            if (metode === 'QRIS') {
                 content += `
-            <p style="margin:12px 0 8px 0;"><strong>Total: <span style="color:var(--primary);">Rp ${grandTotalIDR.toLocaleString('id-ID')} / $${grandTotalUSD.toFixed(2)}</span></strong></p>
-            
-            <div style="text-align:left; margin-top:16px;">
-                <label style="font-size:12px; color:#64748b; text-transform:uppercase;">Upload Bukti Transfer</label>
-                <input type="file" id="buktiTransfer" accept="image/*" style="
-                    width:100%;
-                    padding:10px;
-                    margin-top:6px;
-                    border:1.5px dashed #cbd5e1;
-                    border-radius:10px;
-                    background:#f8fafc;
-                    font-size:13px;
-                ">
-                <div id="previewBukti" style="margin-top:10px; text-align:center;"></div>
-            </div>
-        `;
+                    <p style="margin-bottom:5px; font-size:12px; color:#475569;">Scan the QRIS code using your E-Wallet or Mobile Banking app:</p>
+                    <img src="qris.jpeg" class="qris-img" alt="QRIS Code">
+                `;
+            } else {
+                const noRek = metode === 'BCA' ? '9999999999' : '9999999999999';
+                content += `
+                    <div class="bank-info">
+                        <button class="btn-salin" onclick="navigator.clipboard.writeText('${noRek}'); alert('Account number copied!');">Copy</button>
+                        <p style="margin:0; font-size:11px; color:#64748b;">Account Number:</p>
+                        <p style="margin:4px 0 0 0; font-size:16px; font-weight:800; color:var(--primary);">${noRek}</p>
+                        <p style="margin:4px 0 0 0; font-size:11px; color:#64748b;">a.n Waypoint Store</p>
+                    </div>
+                `;
+            }
 
-                document.getElementById('modalBody').innerHTML = content;
-                document.getElementById('modalPembayaran').style.display = 'flex';
+            content += `
+                <p style="margin:12px 0 8px 0;"><strong>Total: <span style="color:var(--primary);">Rp ${grandTotalIDR.toLocaleString('id-ID')} / $${grandTotalUSD.toFixed(2)}</span></strong></p>
+                
+                <div style="text-align:left; margin-top:16px;">
+                    <label style="font-size:12px; color:#64748b; text-transform:uppercase;">Upload Payment Proof</label>
+                    <input type="file" id="buktiTransfer" accept="image/*" style="
+                        width:100%;
+                        padding:10px;
+                        margin-top:6px;
+                        border:1.5px dashed #cbd5e1;
+                        border-radius:10px;
+                        background:#f8fafc;
+                        font-size:13px;
+                    ">
+                    <div id="previewBukti" style="margin-top:10px; text-align:center;"></div>
+                </div>
+            `;
 
-                // Preview gambar saat dipilih
-                document.getElementById('buktiTransfer').addEventListener('change', function(e) {
+            document.getElementById('modalBody').innerHTML = content;
+            document.getElementById('modalPembayaran').style.display = 'flex';
+
+            // Image preview
+            const fileInput = document.getElementById('buktiTransfer');
+            if (fileInput) {
+                fileInput.addEventListener('change', function(e) {
                     const file = e.target.files[0];
                     if (file) {
                         const reader = new FileReader();
                         reader.onload = function(ev) {
                             document.getElementById('previewBukti').innerHTML = `
-                        <img src="${ev.target.result}" style="max-width:180px; max-height:180px; border-radius:10px; border:1px solid #e2e8f0;">
-                        <p style="font-size:12px; color:#64748b; margin:6px 0 0 0;">${file.name}</p>
-                    `;
+                                <img src="${ev.target.result}" style="max-width:180px; max-height:180px; border-radius:10px; border:1px solid #e2e8f0;">
+                                <p style="font-size:12px; color:#64748b; margin:6px 0 0 0;">${file.name}</p>
+                            `;
                         };
                         reader.readAsDataURL(file);
                     }
@@ -839,50 +867,41 @@
         }
 
         function konfirmasiDanKirimWA() {
-            const nama = document.getElementById('nama').value;
-            const namaKapal = document.getElementById('nama-kapal').value;
+            const nama = document.getElementById('nama').value.trim();
+            const namaKapal = document.getElementById('nama-kapal').value.trim();
             const opsiPembayaran = document.querySelector('input[name="pembayaran"]:checked').value;
             const nomorWA_Dapur = "6285782937698";
 
-            // === Ambil file bukti transfer (jika ada) ===
             const fileInput = document.getElementById('buktiTransfer');
-            let buktiBase64 = null;
-            let buktiType = null;
-            let buktiName = null;
+            const hasFile = fileInput && fileInput.files && fileInput.files[0];
 
-            if (fileInput && fileInput.files && fileInput.files[0]) {
+            if (hasFile) {
                 const file = fileInput.files[0];
 
-                // Validasi ukuran (maks 4MB)
                 if (file.size > 4 * 1024 * 1024) {
-                    alert('Ukuran file terlalu besar! Maksimal 4MB.');
+                    alert('File size is too large! Maximum 4MB.');
                     return;
                 }
 
-                // Baca file sebagai base64
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const result = e.target.result;
-                    // Hapus prefix data:image/...;base64,
-                    buktiBase64 = result.split(',')[1];
-                    buktiType = file.type;
-                    buktiName = file.name;
-
-                    kirimData(buktiBase64, buktiType, buktiName);
+                    const base64 = e.target.result.split(',')[1];
+                    prosesKirim(base64, file.type, file.name);
+                };
+                reader.onerror = function() {
+                    alert('Failed to read the payment proof file.');
                 };
                 reader.readAsDataURL(file);
             } else {
-                // Tidak ada file (misalnya COD atau user skip)
                 if (opsiPembayaran !== 'COD') {
-                    const yakin = confirm('Anda belum upload bukti transfer. Lanjutkan tanpa bukti?');
-                    if (!yakin) return;
+                    const confirmSkip = confirm('You have not uploaded a payment proof. Continue without it?');
+                    if (!confirmSkip) return;
                 }
-                kirimData(null, null, null);
+                prosesKirim(null, null, null);
             }
 
-            function kirimData(base64, type, name) {
-                const URL_GOOGLE_SCRIPT = "https://script.google.com/macros/s/AKfycbzC1uGMYq2YxETq-vi2wwyhwhbqR1Ha4LZAX1ajC3f2P0vMm5nPMpB8D5Rs-XjZTvww/exec";
-
+            function prosesKirim(base64, type, name) {
+                // Group items
                 const itemDikelompokkan = keranjang.reduce((acc, item) => {
                     const n = item.nama || item.namaItem || 'Item';
                     acc[n] = (acc[n] || 0) + (item.qty || 1);
@@ -904,8 +923,9 @@
                 const grandTotalUSD = totalUSD + HANDLING_FEE_USD;
                 const totalTeks = `Rp ${grandTotalIDR.toLocaleString('id-ID')} / $${grandTotalUSD.toFixed(2)} (inc. handling fee)`;
 
+                // Send to Google Sheet
                 const payload = {
-                    tanggal: new Date().toLocaleString('id-ID'),
+                    tanggal: new Date().toLocaleString('en-US'),
                     nama: nama,
                     namaKapal: namaKapal,
                     pesanan: daftarPesananTeks,
@@ -916,7 +936,6 @@
                     buktiName: name
                 };
 
-                // Kirim ke Google Sheet + Drive
                 fetch(URL_GOOGLE_SCRIPT, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -924,9 +943,9 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(payload)
-                }).catch(err => console.error("Gagal kirim ke Sheet:", err));
+                }).catch(err => console.error("Failed to save to Sheets:", err));
 
-                // Buat pesan WhatsApp
+                // WhatsApp message
                 const pesan = `*WAYPOINT INDONESIA STORE ORDER*%0A%0A` +
                     `*Crew Name:* ${nama}%0A` +
                     `*Vessel Name:* ${namaKapal}%0A%0A` +
@@ -934,16 +953,33 @@
                     `*Handling Fee:* Rp 36,000 / $2.00%0A` +
                     `*Total Amount:* Rp ${grandTotalIDR.toLocaleString('id-ID')} / $${grandTotalUSD.toFixed(2)}%0A` +
                     `*Payment Method:* ${opsiPembayaran}%0A%0A` +
-                    (base64 ? `_Bukti transfer sudah diupload_` : `_Status: Awaiting Payment Receipt_`);
+                    (base64 ? `_Payment proof has been uploaded_` : `_Status: Awaiting Payment Receipt_`);
 
+                // Clear cart
                 localStorage.removeItem('waypoint_cart');
-                window.open(`https://api.whatsapp.com/send?phone=${nomorWA_Dapur}&text=${pesan}`, '_blank');
 
-                // Tutup modal
-                document.getElementById('modalPembayaran').style.display = 'none';
+                // Close payment modal if open
+                const modalBayar = document.getElementById('modalPembayaran');
+                if (modalBayar) modalBayar.style.display = 'none';
+
+                // Show success modal
+                document.getElementById('modalSukses').style.display = 'flex';
+
+                // Store WhatsApp link
+                window.pesanWASementara = `https://api.whatsapp.com/send?phone=${nomorWA_Dapur}&text=${pesan}`;
             }
         }
 
+        function tutupModalSukses() {
+            document.getElementById('modalSukses').style.display = 'none';
+
+            if (window.pesanWASementara) {
+                window.open(window.pesanWASementara, '_blank');
+                window.pesanWASementara = null;
+            }
+        }
+
+        // Initialize
         updateUI();
     </script>
 </body>
