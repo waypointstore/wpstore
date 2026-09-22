@@ -513,28 +513,48 @@
     </footer>
 
     <script>
-        // Update cart count
         let keranjang = JSON.parse(localStorage.getItem('waypoint_cart')) || [];
         let totalQty = keranjang.reduce((sum, item) => sum + (item.qty || 1), 0);
         document.getElementById('nav-cart-count').textContent = totalQty;
 
-        // GANTI dengan URL Google Apps Script Anda
         const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbz_HHRzirHhnFxsQ40AY5ys7J8w0_3whUYa_CiNPCWLwK8Q5dUYv2F4VYsofTHLEafd/exec";
 
         async function trackOrder() {
             const orderId = document.getElementById('orderIdInput').value.trim();
             const hasilDiv = document.getElementById('hasilTracking');
+            const btn = document.querySelector('.btn-track');
 
             if (!orderId) {
-                alert('Silakan masukkan Order ID terlebih dahulu');
+                alert('Please enter an Order ID');
                 return;
             }
 
+            // Tampilkan loading segera
             hasilDiv.classList.add('show');
-            hasilDiv.innerHTML = `<p class="loading-msg">Mencari order...</p>`;
+            hasilDiv.innerHTML = `
+        <div style="text-align:center; padding: 20px 0;">
+            <div style="font-size:28px; margin-bottom:10px;">⏳</div>
+            <p style="color:#64748b; margin:0;">Searching for your order...</p>
+        </div>
+    `;
+
+            if (btn) {
+                btn.disabled = true;
+                btn.innerText = 'Searching...';
+            }
 
             try {
-                const res = await fetch(`${URL_SCRIPT}?action=track&orderId=${encodeURIComponent(orderId)}`);
+                // Timeout 12 detik
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 12000);
+
+                const res = await fetch(
+                    `${URL_SCRIPT}?action=track&orderId=${encodeURIComponent(orderId)}`, {
+                        signal: controller.signal
+                    }
+                );
+
+                clearTimeout(timeoutId);
                 const json = await res.json();
 
                 if (json.status === "success") {
@@ -546,52 +566,56 @@
                     if (d.status === "Cancelled") statusClass = "status-cancelled";
 
                     hasilDiv.innerHTML = `
-                        <div class="result-row">
-                            <span class="label">Order ID</span>
-                            <span class="value">${d.orderId}</span>
-                        </div>
-                        <div class="result-row">
-                            <span class="label">Tanggal</span>
-                            <span class="value">${d.tanggal}</span>
-                        </div>
-                        <div class="result-row">
-                            <span class="label">Crew Name</span>
-                            <span class="value">${d.namaKru}</span>
-                        </div>
-                        <div class="result-row">
-                            <span class="label">Vessel Name</span>
-                            <span class="value">${d.namaKapal}</span>
-                        </div>
-                        <div class="result-row">
-                            <span class="label">Pesanan</span>
-                            <span class="value">${d.pesanan}</span>
-                        </div>
-                        <div class="result-row">
-                            <span class="label">Total</span>
-                            <span class="value">${d.total}</span>
-                        </div>
-                        <div class="result-row">
-                            <span class="label">Metode</span>
-                            <span class="value">${d.metode}</span>
-                        </div>
-                        <div class="result-row" style="margin-top:14px; margin-bottom:0;">
-                            <span class="label">Status</span>
-                            <span class="status-badge ${statusClass}">${d.status}</span>
-                        </div>
-                    `;
+                <div class="result-row">
+                    <span class="label">Order ID</span>
+                    <span class="value">${d.orderId}</span>
+                </div>
+                <div class="result-row">
+                    <span class="label">Date</span>
+                    <span class="value">${d.tanggal}</span>
+                </div>
+                <div class="result-row">
+                    <span class="label">Crew Name</span>
+                    <span class="value">${d.namaKru}</span>
+                </div>
+                <div class="result-row">
+                    <span class="label">Vessel Name</span>
+                    <span class="value">${d.namaKapal}</span>
+                </div>
+                <div class="result-row">
+                    <span class="label">Order List</span>
+                    <span class="value">${d.pesanan}</span>
+                </div>
+                <div class="result-row">
+                    <span class="label">Total</span>
+                    <span class="value">${d.total}</span>
+                </div>
+                <div class="result-row">
+                    <span class="label">Payment</span>
+                    <span class="value">${d.metode}</span>
+                </div>
+                <div class="result-row" style="margin-top:14px; margin-bottom:0;">
+                    <span class="label">Status</span>
+                    <span class="status-badge ${statusClass}">${d.status}</span>
+                </div>
+            `;
                 } else {
-                    hasilDiv.innerHTML = `<p class="error-msg">${json.message || 'Order tidak ditemukan'}</p>`;
+                    hasilDiv.innerHTML = `<p class="error-msg">${json.message || 'Order not found'}</p>`;
                 }
             } catch (err) {
-                console.error(err);
-                hasilDiv.innerHTML = `<p class="error-msg">Gagal mengambil data. Periksa koneksi atau coba lagi.</p>`;
+                if (err.name === 'AbortError') {
+                    hasilDiv.innerHTML = `<p class="error-msg">Request timed out. Please try again.</p>`;
+                } else {
+                    console.error(err);
+                    hasilDiv.innerHTML = `<p class="error-msg">Failed to fetch data. Please check your connection and try again.</p>`;
+                }
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerText = 'Track Order';
+                }
             }
         }
-
-        // Enter key support
-        document.getElementById('orderIdInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') trackOrder();
-        });
     </script>
 </body>
 
