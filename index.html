@@ -5,9 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Waypoint Indonesia Store - Home</title>
+
+    <!-- Professional Font: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
          :root {
             --primary: #0b3d5c;
@@ -20,20 +23,16 @@
             --border-color: #e2e8f0;
             --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.08);
             --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+            --accent: #f97316;
         }
         
         * {
             box-sizing: border-box;
         }
         
-        .changa-one-regular {
-            font-family: "Changa One", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-        }
-        
         body {
-            font-family: 'Changa One', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-weight: 400;
             margin: 0;
             padding: 0;
             background-image: linear-gradient(180deg, rgba(11, 61, 92, 0.75) 0%, rgba(15, 23, 42, 0.85) 100%), url('riyun.webp');
@@ -42,10 +41,22 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
             color: var(--dark);
-            line-height: 1.55;
+            line-height: 1.6;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            letter-spacing: -0.011em;
+        }
+        
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Inter', system-ui, sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.025em;
         }
         
         .top-navbar {
@@ -53,7 +64,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 12px 5%;
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(226, 232, 240, 0.8);
             position: sticky;
@@ -78,11 +89,12 @@
         .nav-link-item {
             text-decoration: none;
             color: var(--dark);
-            font-weight: 400;
+            font-weight: 600;
             font-size: 14px;
             padding: 8px 16px;
             border-radius: 30px;
             transition: all 0.25s ease;
+            letter-spacing: 0.01em;
         }
         
         .nav-link-item:hover {
@@ -123,17 +135,15 @@
             position: absolute;
             top: -4px;
             right: -4px;
-            background: var(--accent, #f97316);
-            /* Menggunakan warna aksen oranye */
+            background: var(--accent);
             color: #ffffff;
             border-radius: 50%;
             padding: 2px 6px;
             font-size: 11px;
-            font-weight: bold;
+            font-weight: 700;
             line-height: 1;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
-        /* HERO SECTION */
         
         .home-section {
             text-align: center;
@@ -147,10 +157,12 @@
             font-weight: 800;
             margin: 0 0 10px 0;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.03em;
         }
         
         .home-subtitle {
             font-size: 16px;
+            font-weight: 400;
             color: rgba(255, 255, 255, 0.9);
             margin: 0 0 10px 0;
             text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
@@ -162,19 +174,19 @@
             padding: 14px 32px;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: 400;
+            font-weight: 600;
             font-size: 15px;
             display: inline-block;
             margin-top: 15px;
             box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
             transition: transform 0.2s, box-shadow 0.2s;
+            letter-spacing: 0.02em;
         }
         
         .btn-cta:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(249, 115, 22, 0.6);
         }
-        /* CONTAINER DIBUAT MEMANJANG (MAX-WIDTH: 1200PX) */
         
         .container {
             max-width: 1200px;
@@ -182,7 +194,6 @@
             margin: 10px auto 50px auto;
             padding: 0 10px;
         }
-        /* TUTORIAL SECTION MEMANJANG */
         
         .tutorial-section {
             background: #ffffff;
@@ -201,47 +212,16 @@
             font-size: 28px;
             color: #083344;
             margin: 0 0 8px 0;
-            font-weight: 800;
+            font-weight: 700;
+            letter-spacing: -0.025em;
         }
         
         .tutorial-header p {
             color: var(--text-muted);
             font-size: 15px;
             margin: 0 0 20px 0;
-        }
-        /* TOMBOL PILIHAN BAHASA */
-        
-        .lang-switch-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-        
-        .lang-btn {
-            border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 13px;
             font-weight: 400;
-            cursor: pointer;
-            transition: all 0.2s ease;
         }
-        
-        .lang-btn.active {
-            background: #0b3d5c;
-            color: #ffffff;
-        }
-        
-        .lang-btn.inactive {
-            background: #f1f5f9;
-            color: #64748b;
-        }
-        
-        .lang-btn.inactive:hover {
-            background: #e2e8f0;
-        }
-        /* GRID DIGANTI JADI EXACT 4 KOLOM MEMANJANG */
         
         .steps-grid {
             display: grid;
@@ -258,6 +238,12 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        
+        .step-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
         }
         
         .step-badge {
@@ -265,7 +251,7 @@
             height: 32px;
             background: #0b3d5c;
             color: #ffffff;
-            font-weight: 800;
+            font-weight: 700;
             font-size: 14px;
             border-radius: 50%;
             display: flex;
@@ -278,18 +264,20 @@
             margin: 0 0 10px 0;
             color: #0f172a;
             font-size: 16px;
-            font-weight: 400;
+            font-weight: 600;
+            letter-spacing: -0.015em;
         }
         
         .step-card p {
             margin: 0;
             font-size: 13px;
             color: #64748b;
-            line-height: 1.5;
+            line-height: 1.55;
+            font-weight: 400;
         }
         
         .footer-banner {
-            background-color: var(--footer-bg);
+            background-color: var(--primary);
             color: #f8fafc;
             padding: 24px 5%;
             margin-top: 50px;
@@ -319,8 +307,8 @@
         
         .footer-brand {
             font-size: 20px;
-            font-weight: 500;
-            letter-spacing: 1px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
             color: #ffffff;
         }
         
@@ -330,7 +318,7 @@
             letter-spacing: 0.8px;
             color: #cbd5e1;
             margin-bottom: 4px;
-            font-weight: 500;
+            font-weight: 600;
         }
         
         .footer-address-text {
@@ -338,8 +326,8 @@
             color: #e2e8f0;
             margin: 0;
             line-height: 1.4;
+            font-weight: 400;
         }
-        /* LOGO WHATSAPP */
         
         .wa-link-icon {
             display: inline-flex;
@@ -390,7 +378,6 @@
         .footer-links a:hover {
             color: #ffffff;
         }
-        /* RESPONSIVE UNTUK HP */
         
         @media (max-width: 900px) {
             .steps-grid {
@@ -412,13 +399,18 @@
                 justify-content: center;
                 margin-top: 8px;
             }
+            .home-title {
+                font-size: 26px;
+            }
+            .brand-logo {
+                height: 52px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- NAVBAR TOP -->
     <header class="top-navbar">
         <div class="brand-logo-container">
             <img src="wplogo.webp" alt="Waypoint Store Logo" class="brand-logo">
@@ -426,13 +418,14 @@
 
         <nav>
             <ul class="nav-links">
-                <li><a href="index.html" class="nav-link-item">Home</a></li>
+                <li><a href="index.html" class="nav-link-item active">Home</a></li>
                 <li><a href="menu.html" class="nav-link-item">Menu</a></li>
                 <li><a href="order.html" class="nav-link-item">Order</a></li>
                 <li><a href="tracking.html" class="nav-link-item">Track</a></li>
                 <li><a href="about.html" class="nav-link-item">About Us</a></li>
             </ul>
         </nav>
+
         <div class="nav-right-container">
             <a href="order.html" class="cart-badge-btn" title="View Cart">
                 <img src="cart.png" alt="Cart Icon" class="cart-custom-icon">
@@ -442,7 +435,7 @@
     </header>
 
     <section class="home-section">
-        <h1 class="home-title changa-one-regular">WAYPOINT INDONESIA STORE</h1>
+        <h1 class="home-title">WAYPOINT INDONESIA STORE</h1>
         <p class="home-subtitle">Tanjung Priok - Jakarta</p>
         <p class="home-subtitle">Seamless Food & Essentials Delivery, Right to Your Deck</p>
         <a href="menu.html" class="btn-cta">Explore Menu & Order Now</a>
@@ -469,64 +462,67 @@
                     <div class="step-card">
                         <div class="step-badge">3</div>
                         <h4>Choose Payment</h4>
-                        <p>Select your preferred method: <strong>COD</strong>, <strong>QRIS</strong>, or <strong>Bank Transfer (BCA/Mandiri)</strong>.</p>
+                        <p>Select your preferred method: <strong>BNI Rupiah</strong>, <strong>BNI Dollar</strong>, or <strong>Cash on Board</strong>.</p>
                     </div>
 
                     <div class="step-card">
                         <div class="step-badge">4</div>
                         <h4>Confirm & Send (WA)</h4>
-                        <p>Click <strong>Proceed</strong> and send your order via WhatsApp. For Transfer/QRIS, attach your payment receipt photo!</p>
+                        <p>Click <strong>Proceed</strong> and send your order via WhatsApp. For bank transfer, attach your payment receipt photo!</p>
                     </div>
                 </div>
             </div>
         </div>
-        <footer class="footer-banner">
-            <div class="footer-top-row">
-                <div class="footer-col">
-                    <div>
-                        <div class="footer-brand">WAYPOINT INDONESIA STORE</div>
-                        <div class="footer-section-title">Port Base Address</div>
-                        <p class="footer-address-text">
-                            Jl. Pelabuhan Utama No. 88, Port Area, Tanjung Priok, Jakarta Utara, 14310
-                        </p>
-                    </div>
+    </div>
+
+    <footer class="footer-banner">
+        <div class="footer-top-row">
+            <div class="footer-col">
+                <div>
+                    <div class="footer-brand">WAYPOINT INDONESIA STORE</div>
+                    <div class="footer-section-title">Port Base Address</div>
+                    <p class="footer-address-text">
+                        Jl. Pelabuhan Utama No. 88, Port Area, Tanjung Priok, Jakarta Utara, 14310
+                    </p>
                 </div>
+            </div>
 
-                <div class="footer-divider"></div>
+            <div class="footer-divider"></div>
 
-                <div class="footer-col" style="flex-direction: column; align-items: flex-start; gap: 12px;">
-                    <div style="display: flex; align-items: center; gap: 16px;">
-                        <div>
-                            <div class="footer-section-title">Contact Us</div>
-                            <div style="font-size: 13px; color: #e2e8f0;">Direct WhatsApp Support</div>
-                        </div>
-                        <a href="https://api.whatsapp.com/send?phone=6285782937698&text=Hello%20Waypoint%20Store,%20I%20have%20an%20inquiry." target="_blank" class="wa-link-icon" title="Chat with Us on WhatsApp">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+            <div class="footer-col" style="flex-direction: column; align-items: flex-start; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div>
+                        <div class="footer-section-title">Contact Us</div>
+                        <div style="font-size: 13px; color: #e2e8f0;">Direct WhatsApp Support</div>
+                    </div>
+                    <a href="https://api.whatsapp.com/send?phone=6285782937698&text=Hello%20Waypoint%20Store,%20I%20have%20an%20inquiry." target="_blank" class="wa-link-icon" title="Chat with Us on WhatsApp">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                             <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3 18.6-68.1-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
                         </svg>
-                        </a>
-                    </div>
-
-                    <div style="margin-top: 6px;">
-                        <div class="footer-section-title">Company Website</div>
-                        <a href="http://www.waypointports.com/" target="_blank" style="color: #38bdf8; text-decoration: none; font-size: 13px; font-weight: 500;">
-                        www.waypoint.com &rarr;
                     </a>
-                    </div>
                 </div>
-            </div>
 
-            <div class="footer-bottom-row">
-                <div class="footer-links">
-                    TM & Copyright 2026 Waypoint Store Indonesia. All Rights Reserved.
+                <div style="margin-top: 6px;">
+                    <div class="footer-section-title">Company Website</div>
+                    <a href="http://www.waypointports.com/" target="_blank" style="color: #38bdf8; text-decoration: none; font-size: 13px; font-weight: 500;">
+                        www.waypoint.com →
+                    </a>
                 </div>
             </div>
-        </footer>
-        <script>
-            const keranjang = JSON.parse(localStorage.getItem('waypoint_cart')) || [];
-            const totalQty = keranjang.reduce((sum, item) => sum + (item.qty || 1), 0);
-            document.getElementById('nav-cart-count').textContent = totalQty;
-        </script>
+        </div>
+
+        <div class="footer-bottom-row">
+            <div class="footer-links">
+                TM & Copyright 2026 Waypoint Store Indonesia. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const keranjang = JSON.parse(localStorage.getItem('waypoint_cart')) || [];
+        const totalQty = keranjang.reduce((sum, item) => sum + (item.qty || 1), 0);
+        document.getElementById('nav-cart-count').textContent = totalQty;
+    </script>
 
 </body>
 
