@@ -5,9 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Waypoint Indonesia Store - Order Here</title>
+
+    <!-- Professional Font: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
          :root {
             --primary: #0b3d5c;
@@ -32,7 +35,8 @@
         }
         
         body {
-            font-family: 'Changa One', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-weight: 400;
             margin: 0;
             padding: 0;
             background-image: linear-gradient(180deg, rgba(11, 61, 92, 0.75) 0%, rgba(15, 23, 42, 0.85) 100%), url('belmon.png');
@@ -41,10 +45,22 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
             color: var(--dark);
-            line-height: 1.55;
+            line-height: 1.6;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            letter-spacing: -0.011em;
+        }
+        
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Inter', system-ui, sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.025em;
         }
         
         .top-navbar {
@@ -53,7 +69,7 @@
             justify-content: space-between;
             width: 100%;
             padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(226, 232, 240, 0.8);
             position: sticky;
@@ -78,11 +94,12 @@
         .nav-link-item {
             text-decoration: none;
             color: var(--dark);
-            font-weight: 400;
+            font-weight: 600;
             font-size: 14px;
             padding: 8px 16px;
             border-radius: 30px;
             transition: all 0.25s ease;
+            letter-spacing: 0.01em;
         }
         
         .nav-link-item:hover {
@@ -128,7 +145,7 @@
             border-radius: 50%;
             padding: 2px 6px;
             font-size: 11px;
-            font-weight: bold;
+            font-weight: 700;
             line-height: 1;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
@@ -155,7 +172,7 @@
             border-bottom: 2px solid #f1f5f9;
             font-size: 17px;
             color: var(--primary);
-            font-weight: 400;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -164,11 +181,11 @@
         label {
             display: block;
             margin-bottom: 5px;
-            font-weight: 400;
+            font-weight: 600;
             font-size: 11px;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.6px;
+            letter-spacing: 0.05em;
         }
         
         input,
@@ -179,6 +196,7 @@
             border: 1.5px solid var(--border-color);
             border-radius: var(--radius-sm);
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
             font-size: 14px;
             background: #f8fafc;
             color: var(--dark);
@@ -210,7 +228,7 @@
         .ringkasan-pesanan li {
             margin-bottom: 8px;
             font-size: 13px;
-            font-weight: 400;
+            font-weight: 500;
             color: var(--dark);
         }
         
@@ -226,7 +244,7 @@
         
         .payment-options {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 12px;
             margin-bottom: 22px;
         }
@@ -253,7 +271,7 @@
         
         .payment-card span {
             font-size: 12.5px;
-            font-weight: 400;
+            font-weight: 600;
             color: var(--text-muted);
             display: block;
         }
@@ -275,13 +293,14 @@
             padding: 15px;
             border: none;
             border-radius: 12px;
+            font-family: 'Inter', sans-serif;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 700;
             cursor: pointer;
             box-shadow: 0 6px 18px rgba(11, 61, 92, 0.3);
             transition: all 0.25s ease;
             text-transform: uppercase;
-            letter-spacing: 0.6px;
+            letter-spacing: 0.04em;
         }
         
         .btn-kirim:hover {
@@ -332,15 +351,6 @@
             }
         }
         
-        .qris-img {
-            width: 180px;
-            height: 180px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            margin: 14px 0;
-            box-shadow: var(--shadow-sm);
-        }
-        
         .bank-info {
             background: #f8fafc;
             border: 1.5px dashed #cbd5e1;
@@ -360,6 +370,7 @@
             cursor: pointer;
             float: right;
             font-weight: 700;
+            font-family: 'Inter', sans-serif;
         }
         
         .btn-close-modal {
@@ -371,8 +382,9 @@
             margin-top: 10px;
             cursor: pointer;
             width: 100%;
-            font-weight: 400;
+            font-weight: 600;
             font-size: 13px;
+            font-family: 'Inter', sans-serif;
             transition: background 0.2s;
         }
         
@@ -425,8 +437,8 @@
         
         .footer-brand {
             font-size: 20px;
-            font-weight: 500;
-            letter-spacing: 1px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
             color: #ffffff;
         }
         
@@ -436,7 +448,7 @@
             letter-spacing: 0.8px;
             color: #cbd5e1;
             margin-bottom: 4px;
-            font-weight: 500;
+            font-weight: 600;
         }
         
         .footer-address-text {
@@ -561,6 +573,9 @@
                 <p style="margin: 8px 0 0 0; border-top: 1px dashed #cbd5e1; padding-top: 8px; font-size: 15px;">
                     <strong>Total: <span id="total-harga" style="color: var(--primary); font-size: 17px;">Rp 0 / $0.00</span></strong>
                 </p>
+                <p id="min-order-warning" style="margin: 8px 0 0 0; font-size: 13px; color: #b45309; display: none;">
+                    ⚠️ Minimum order is <strong>$50.00</strong> per vessel
+                </p>
             </div>
 
             <h3>Crew & Vessel Details</h3>
@@ -573,39 +588,32 @@
             <h3>Payment Method</h3>
             <div class="payment-options">
                 <label class="payment-card">
-                    <input type="radio" name="pembayaran" value="COD" checked>
+                    <input type="radio" name="pembayaran" value="BNI_IDR" checked>
                     <div class="pay-content">
-                        <span>Cash on Delivery (COD)</span>
+                        <span>BNI IDR</span>
                     </div>
                 </label>
                 <label class="payment-card">
-                    <input type="radio" name="pembayaran" value="QRIS">
+                    <input type="radio" name="pembayaran" value="BNI_USD">
                     <div class="pay-content">
-                        <span>QRIS / E-Wallet</span>
+                        <span>BNI USD</span>
                     </div>
                 </label>
                 <label class="payment-card">
-                    <input type="radio" name="pembayaran" value="BCA">
+                    <input type="radio" name="pembayaran" value="COB">
                     <div class="pay-content">
-                        <span>BCA Bank Transfer</span>
-                    </div>
-                </label>
-                <label class="payment-card">
-                    <input type="radio" name="pembayaran" value="MANDIRI">
-                    <div class="pay-content">
-                        <span>Mandiri Bank Transfer</span>
+                        <span>Cash on Board</span>
                     </div>
                 </label>
             </div>
 
             <button class="btn-kirim" id="btnProceed" onclick="prosesPembayaran()">Proceed to Payment</button>
 
-            <!-- Payment Instruction Modal -->
+            <!-- Payment Modal -->
             <div class="modal-pembayaran" id="modalPembayaran">
                 <div class="modal-content-pay">
                     <h3 id="modalTitle" style="margin-top:0; color: var(--primary);">Payment Instructions</h3>
                     <div id="modalBody"></div>
-
                     <button class="btn-kirim" onclick="konfirmasiDanKirimWA()" style="margin-top: 12px;">Confirm & Send Order (WA)</button>
                     <button class="btn-close-modal" onclick="tutupModal()">Cancel</button>
                 </div>
@@ -671,9 +679,14 @@
     <script>
         const HANDLING_FEE_IDR = 36000;
         const HANDLING_FEE_USD = 2.00;
+        const MINIMUM_ORDER_USD = 50.00;
 
-        // IMPORTANT: Replace with your Google Apps Script Web App URL
+        // Ganti dengan URL Google Apps Script Anda
         const URL_GOOGLE_SCRIPT = "https://script.google.com/macros/s/AKfycbz_HHRzirHhnFxsQ40AY5ys7J8w0_3whUYa_CiNPCWLwK8Q5dUYv2F4VYsofTHLEafd/exec";
+
+        // Nomor rekening BNI (GANTI dengan nomor asli Anda)
+        const REK_BNI_IDR = "1234567890";
+        const REK_BNI_USD = "0987654321";
 
         let keranjang = JSON.parse(localStorage.getItem('waypoint_cart')) || [];
         let totalIDR = 0;
@@ -684,6 +697,7 @@
             const totalHarga = document.getElementById('total-harga');
             const handlingFeeText = document.getElementById('handling-fee-text');
             const navCartCount = document.getElementById('nav-cart-count');
+            const warningEl = document.getElementById('min-order-warning');
 
             let totalQty = 0;
             totalIDR = 0;
@@ -719,6 +733,7 @@
                 daftarItem.innerHTML = `<li style="list-style: none; color: #64748b; margin-left: 0;">No items selected yet</li>`;
                 handlingFeeText.textContent = `Rp 0 / $0.00`;
                 totalHarga.textContent = `Rp 0 / $0.00`;
+                if (warningEl) warningEl.style.display = 'none';
             } else {
                 daftarItem.innerHTML = '';
 
@@ -731,7 +746,6 @@
 
                     const totalItemHargaIDR = itemGroup.hargaIDR * itemGroup.jumlah;
                     const totalItemHargaUSD = itemGroup.hargaUSD * itemGroup.jumlah;
-
                     const qtyText = itemGroup.jumlah > 1 ? ` <b>(x${itemGroup.jumlah})</b>` : '';
                     const namaAmanHapus = itemGroup.nama.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
@@ -759,12 +773,20 @@
                 const grandTotalIDR = totalIDR + HANDLING_FEE_IDR;
                 const grandTotalUSD = totalUSD + HANDLING_FEE_USD;
                 totalHarga.textContent = `Rp ${grandTotalIDR.toLocaleString('id-ID')} / $${grandTotalUSD.toFixed(2)}`;
+
+                // Tampilkan peringatan minimum order
+                if (warningEl) {
+                    if (grandTotalUSD > 0 && grandTotalUSD < MINIMUM_ORDER_USD) {
+                        warningEl.style.display = 'block';
+                    } else {
+                        warningEl.style.display = 'none';
+                    }
+                }
             }
         }
 
         function hapusSatuItem(namaBarang) {
             const index = keranjang.findIndex(item => (item.nama || item.namaItem) === namaBarang);
-
             if (index !== -1) {
                 if (keranjang[index].qty && keranjang[index].qty > 1) {
                     keranjang[index].qty -= 1;
@@ -786,44 +808,52 @@
                 return;
             }
 
-            const grandTotalIDR = totalIDR + HANDLING_FEE_IDR;
             const grandTotalUSD = totalUSD + HANDLING_FEE_USD;
 
-            // COD → go directly to confirmation
-            if (metode === 'COD') {
+            // ===== MINIMUM ORDER $50 =====
+            if (grandTotalUSD < MINIMUM_ORDER_USD) {
+                alert(`Minimum order is $${MINIMUM_ORDER_USD.toFixed(2)} per vessel.\n\nYour current total: $${grandTotalUSD.toFixed(2)}\nPlease add more items to continue.`);
+                return;
+            }
+            // =============================
+
+            const grandTotalIDR = totalIDR + HANDLING_FEE_IDR;
+
+            // Cash on Board → langsung konfirmasi
+            if (metode === 'COB') {
                 konfirmasiDanKirimWA();
                 return;
             }
 
-            // Other methods → show payment modal
-            document.getElementById('modalTitle').innerText = metode === 'QRIS' ? 'Payment via QRIS' : `${metode} Bank Transfer`;
+            // BNI IDR / BNI USD
+            let title = '';
+            let accountNumber = '';
+            let currencyNote = '';
+
+            if (metode === 'BNI_IDR') {
+                title = 'BNI Rupiah Transfer';
+                accountNumber = REK_BNI_IDR;
+                currencyNote = `Total: <span style="color:var(--primary);">Rp ${grandTotalIDR.toLocaleString('id-ID')}</span>`;
+            } else if (metode === 'BNI_USD') {
+                title = 'BNI Dollar Transfer';
+                accountNumber = REK_BNI_USD;
+                currencyNote = `Total: <span style="color:var(--primary);">$${grandTotalUSD.toFixed(2)}</span>`;
+            }
+
+            document.getElementById('modalTitle').innerText = title;
 
             let content = `
                 <div class="payment-notice">
                     <span>⚠️</span>
                     <div><strong>Important:</strong> After completing the transfer, please upload your payment proof below.</div>
                 </div>
-            `;
-
-            if (metode === 'QRIS') {
-                content += `
-                    <p style="margin-bottom:5px; font-size:12px; color:#475569;">Scan the QRIS code using your E-Wallet or Mobile Banking app:</p>
-                    <img src="qris.jpeg" class="qris-img" alt="QRIS Code">
-                `;
-            } else {
-                const noRek = metode === 'BCA' ? '9999999999' : '9999999999999';
-                content += `
-                    <div class="bank-info">
-                        <button class="btn-salin" onclick="navigator.clipboard.writeText('${noRek}'); alert('Account number copied!');">Copy</button>
-                        <p style="margin:0; font-size:11px; color:#64748b;">Account Number:</p>
-                        <p style="margin:4px 0 0 0; font-size:16px; font-weight:800; color:var(--primary);">${noRek}</p>
-                        <p style="margin:4px 0 0 0; font-size:11px; color:#64748b;">a.n Waypoint Store</p>
-                    </div>
-                `;
-            }
-
-            content += `
-                <p style="margin:12px 0 8px 0;"><strong>Total: <span style="color:var(--primary);">Rp ${grandTotalIDR.toLocaleString('id-ID')} / $${grandTotalUSD.toFixed(2)}</span></strong></p>
+                <div class="bank-info">
+                    <button class="btn-salin" onclick="navigator.clipboard.writeText('${accountNumber}'); alert('Account number copied!');">Copy</button>
+                    <p style="margin:0; font-size:11px; color:#64748b;">Account Number:</p>
+                    <p style="margin:4px 0 0 0; font-size:16px; font-weight:800; color:var(--primary);">${accountNumber}</p>
+                    <p style="margin:4px 0 0 0; font-size:11px; color:#64748b;">a.n Waypoint Store</p>
+                </div>
+                <p style="margin:12px 0 8px 0;"><strong>${currencyNote}</strong></p>
                 
                 <div style="text-align:left; margin-top:16px;">
                     <label style="font-size:12px; color:#64748b; text-transform:uppercase;">Upload Payment Proof</label>
@@ -843,7 +873,6 @@
             document.getElementById('modalBody').innerHTML = content;
             document.getElementById('modalPembayaran').style.display = 'flex';
 
-            // Image preview
             const fileInput = document.getElementById('buktiTransfer');
             if (fileInput) {
                 fileInput.addEventListener('change', function(e) {
@@ -872,17 +901,22 @@
             const opsiPembayaran = document.querySelector('input[name="pembayaran"]:checked').value;
             const nomorWA_Dapur = "6285782937698";
 
+            // Double check minimum order
+            const grandTotalUSD = totalUSD + HANDLING_FEE_USD;
+            if (grandTotalUSD < MINIMUM_ORDER_USD) {
+                alert(`Minimum order is $${MINIMUM_ORDER_USD.toFixed(2)} per vessel.`);
+                return;
+            }
+
             const fileInput = document.getElementById('buktiTransfer');
             const hasFile = fileInput && fileInput.files && fileInput.files[0];
 
             if (hasFile) {
                 const file = fileInput.files[0];
-
                 if (file.size > 4 * 1024 * 1024) {
                     alert('File size is too large! Maximum 4MB.');
                     return;
                 }
-
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const base64 = e.target.result.split(',')[1];
@@ -893,7 +927,7 @@
                 };
                 reader.readAsDataURL(file);
             } else {
-                if (opsiPembayaran !== 'COD') {
+                if (opsiPembayaran !== 'COB') {
                     const confirmSkip = confirm('You have not uploaded a payment proof. Continue without it?');
                     if (!confirmSkip) return;
                 }
@@ -901,7 +935,6 @@
             }
 
             function prosesKirim(base64, type, name) {
-                // Group items
                 const itemDikelompokkan = keranjang.reduce((acc, item) => {
                     const n = item.nama || item.namaItem || 'Item';
                     acc[n] = (acc[n] || 0) + (item.qty || 1);
@@ -923,14 +956,18 @@
                 const grandTotalUSD = totalUSD + HANDLING_FEE_USD;
                 const totalTeks = `Rp ${grandTotalIDR.toLocaleString('id-ID')} / $${grandTotalUSD.toFixed(2)} (inc. handling fee)`;
 
-                // Send to Google Sheet
+                let metodeTampil = opsiPembayaran;
+                if (opsiPembayaran === 'BNI_IDR') metodeTampil = 'BNI Rupiah';
+                if (opsiPembayaran === 'BNI_USD') metodeTampil = 'BNI Dollar';
+                if (opsiPembayaran === 'COB') metodeTampil = 'Cash on Board';
+
                 const payload = {
                     tanggal: new Date().toLocaleString('en-US'),
                     nama: nama,
                     namaKapal: namaKapal,
                     pesanan: daftarPesananTeks,
                     total: totalTeks,
-                    metode: opsiPembayaran,
+                    metode: metodeTampil,
                     buktiBase64: base64,
                     buktiType: type,
                     buktiName: name
@@ -945,41 +982,33 @@
                     body: JSON.stringify(payload)
                 }).catch(err => console.error("Failed to save to Sheets:", err));
 
-                // WhatsApp message
                 const pesan = `*WAYPOINT INDONESIA STORE ORDER*%0A%0A` +
                     `*Crew Name:* ${nama}%0A` +
                     `*Vessel Name:* ${namaKapal}%0A%0A` +
                     `*Order List:*%0A${teksMenuWA}%0A` +
                     `*Handling Fee:* Rp 36,000 / $2.00%0A` +
                     `*Total Amount:* Rp ${grandTotalIDR.toLocaleString('id-ID')} / $${grandTotalUSD.toFixed(2)}%0A` +
-                    `*Payment Method:* ${opsiPembayaran}%0A%0A` +
+                    `*Payment Method:* ${metodeTampil}%0A%0A` +
                     (base64 ? `_Payment proof has been uploaded_` : `_Status: Awaiting Payment Receipt_`);
 
-                // Clear cart
                 localStorage.removeItem('waypoint_cart');
 
-                // Close payment modal if open
                 const modalBayar = document.getElementById('modalPembayaran');
                 if (modalBayar) modalBayar.style.display = 'none';
 
-                // Show success modal
                 document.getElementById('modalSukses').style.display = 'flex';
-
-                // Store WhatsApp link
                 window.pesanWASementara = `https://api.whatsapp.com/send?phone=${nomorWA_Dapur}&text=${pesan}`;
             }
         }
 
         function tutupModalSukses() {
             document.getElementById('modalSukses').style.display = 'none';
-
             if (window.pesanWASementara) {
                 window.open(window.pesanWASementara, '_blank');
                 window.pesanWASementara = null;
             }
         }
 
-        // Initialize
         updateUI();
     </script>
 </body>
