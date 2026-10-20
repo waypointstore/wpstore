@@ -546,7 +546,7 @@
         let totalQty = keranjang.reduce((sum, item) => sum + (item.qty || 1), 0);
         document.getElementById('nav-cart-count').textContent = totalQty;
 
-        const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbz_HHRzirHhnFxsQ40AY5ys7J8w0_3whUYa_CiNPCWLwK8Q5dUYv2F4VYsofTHLEafd/exec";
+        const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbyAALa49gpiq83_unVKe5LHbW-xXHzqYxRMrabOKIaJa-UwJoL9sG9VbvcfAKGc12N1/exec";
 
         async function trackOrder() {
             const orderId = document.getElementById('orderIdInput').value.trim();
