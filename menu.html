@@ -264,6 +264,38 @@
             border-radius: 12px;
             pointer-events: none;
         }
+        /* Styling untuk Produk Habis (Out of Stock) */
+        
+        .menu-item.out-of-stock {
+            opacity: 0.75;
+        }
+        
+        .stock-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #ef4444;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
+            z-index: 2;
+        }
+        
+        .btn-tambah.disabled {
+            background: #94a3b8 !important;
+            color: #ffffff !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
+        .menu-item.out-of-stock .menu-img {
+            filter: grayscale(0.6);
+        }
         
         .menu-info {
             padding: 14px;
@@ -299,6 +331,76 @@
         
         .menu-ingredients.show {
             display: block;
+        }
+        /* Quantity Selector UI - Sleek & Modern */
+        
+        .qty-control {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f8fafc;
+            border: 1.5px solid var(--border-color);
+            border-radius: 10px;
+            padding: 3px;
+            margin-top: 12px;
+        }
+        
+        .btn-qty {
+            background: #ffffff;
+            color: var(--primary);
+            border: 1px solid var(--border-color);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+        }
+        
+        .btn-qty:hover {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+        }
+        
+        .btn-qty:active {
+            transform: scale(0.92);
+        }
+        
+        .input-qty {
+            width: 40px !important;
+            height: 32px;
+            text-align: center;
+            margin-bottom: 0 !important;
+            padding: 0 !important;
+            font-weight: 700;
+            font-size: 14px;
+            border: none !important;
+            background: transparent !important;
+            color: var(--dark);
+            box-shadow: none !important;
+        }
+        
+        .input-qty::-webkit-outer-spin-button,
+        .input-qty::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        .input-qty[type=number] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+        
+        .btn-tambah {
+            border-radius: 10px;
+            font-weight: 600;
+            margin-top: 8px;
         }
         
         @keyframes fadeInDown {
@@ -602,7 +704,8 @@
                 hargaUSD: 9.70,
                 kategori: "fastfood",
                 gambar: "pep.jpg",
-                ingredients: "Hand-tossed dough, tomato sauce, mozzarella cheese, and sliced beef pepperoni."
+                ingredients: "Hand-tossed dough, tomato sauce, mozzarella cheese, and sliced beef pepperoni.",
+                isAvailable: false
             }, {
                 id: 4,
                 nama: "1 Pcs Chicken + 1 Rice KFC",
@@ -1153,7 +1256,8 @@
                 hargaUSD: 16.65,
                 kategori: "souvenir",
                 gambar: "wpj.png",
-                ingredients: "Dry-fit UV (Sun-protective, cool, and moisture-wicking fabric)."
+                ingredients: "Dry-fit UV (Sun-protective, cool, and moisture-wicking fabric).",
+                isAvailable: false
             }, {
                 id: 75,
                 nama: "Waypoint Keychain",
@@ -1248,17 +1352,28 @@
         };
         let pendingItem = null;
 
-        function handleAddToCart(namaItem, hargaIDR, hargaUSD, gambar) {
+        function handleAddToCart(namaItem, hargaIDR, hargaUSD, gambar, itemId) {
+            // Ambil jumlah dari input qty
+            let qty = 1;
+            if (itemId) {
+                const input = document.getElementById(`qty-input-${itemId}`);
+                if (input) {
+                    qty = parseInt(input.value) || 1;
+                    if (qty < 1) qty = 1;
+                }
+            }
+
             if (productOptions[namaItem]) {
                 pendingItem = {
                     namaItem,
                     hargaIDR,
                     hargaUSD,
-                    gambar
+                    gambar,
+                    qty: qty
                 };
                 openOptionModal(namaItem);
             } else {
-                tambahKeKeranjang(namaItem, hargaIDR, hargaUSD, gambar);
+                tambahKeKeranjang(namaItem, hargaIDR, hargaUSD, gambar, qty);
             }
         }
 
@@ -1301,8 +1416,9 @@
             const optionValue = selected.value;
             const typeLabel = productOptions[pendingItem.namaItem].type === 'size' ? 'Size' : 'Color';
             const finalName = `${pendingItem.namaItem} - ${typeLabel}: ${optionValue}`;
+            const qty = pendingItem.qty || 1;
 
-            tambahKeKeranjang(finalName, pendingItem.hargaIDR, pendingItem.hargaUSD, pendingItem.gambar);
+            tambahKeKeranjang(finalName, pendingItem.hargaIDR, pendingItem.hargaUSD, pendingItem.gambar, qty);
             closeOptionModal();
         }
 
@@ -1322,12 +1438,29 @@
             const container = document.getElementById('menu-list');
             container.innerHTML = '';
 
-            databaseMenu.forEach((item, idx) => {
+            databaseMenu.forEach((item) => {
                 if (item.kategori.toLowerCase() === kategori.toLowerCase()) {
                     const namaAman = item.nama.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    const isAvailable = item.isAvailable !== false;
+
+                    const badgeHTML = isAvailable ? '' : `<span class="stock-badge">OUT OF STOCK</span>`;
+                    const cardClass = isAvailable ? 'menu-item' : 'menu-item out-of-stock';
+
+                    const actionHTML = isAvailable ? `
+                <div class="qty-control">
+                    <button class="btn-qty" onclick="ubahJumlahInput(${item.id}, -1)">−</button>
+                    <input type="number" id="qty-input-${item.id}" class="input-qty" value="1" min="1" max="99" onchange="validasiInputQty(this)">
+                    <button class="btn-qty" onclick="ubahJumlahInput(${item.id}, 1)">+</button>
+                </div>
+                <button class="btn-tambah" onclick="handleAddToCart('${namaAman}', ${item.hargaIDR}, ${item.hargaUSD}, '${item.gambar}', ${item.id})">+ Add to Cart</button>
+            ` : `
+                <button class="btn-tambah disabled" disabled>Out of Stock</button>
+            `;
+
                     container.innerHTML += `
-                <div class="menu-item">
+                <div class="${cardClass}">
                     <div class="img-wrapper" onclick="toggleDetail(${item.id})" title="Click image to see details">
+                        ${badgeHTML}
                         <img src="${item.gambar}" class="menu-img" alt="${item.nama}">
                     </div>
                     <div class="menu-info">
@@ -1338,11 +1471,30 @@
                             ${item.ingredients || 'No description available.'}
                         </div>
                     </div>
-                    <button class="btn-tambah" onclick="handleAddToCart('${namaAman}', ${item.hargaIDR}, ${item.hargaUSD}, '${item.gambar}')">+ Add to Cart</button>
+                    <div style="padding: 0 14px 14px 14px;">
+                        ${actionHTML}
+                    </div>
                 </div>
             `;
                 }
             });
+        }
+        // Fungsi pengubah angka kuantitas input saat tombol + / - diklik
+        function ubahJumlahInput(id, delta) {
+            const input = document.getElementById(`qty-input-${id}`);
+            if (!input) return;
+            let val = parseInt(input.value) || 1;
+            val += delta;
+            if (val < 1) val = 1;
+            input.value = val;
+        }
+
+        // Validasi input manual agar tidak nol atau minus
+        function validasiInputQty(input) {
+            let val = parseInt(input.value);
+            if (isNaN(val) || val < 1) {
+                input.value = 1;
+            }
         }
 
         function toggleDetail(id) {
@@ -1358,11 +1510,14 @@
             renderMenu(kategori);
         }
 
-        function tambahKeKeranjang(namaItem, hargaIDR, hargaUSD, gambar) {
+        function tambahKeKeranjang(namaItem, hargaIDR, hargaUSD, gambar, qty = 1) {
+            qty = parseInt(qty) || 1;
+            if (qty < 1) qty = 1;
+
             const existingIndex = keranjang.findIndex(item => (item.namaItem === namaItem || item.nama === namaItem));
 
             if (existingIndex > -1) {
-                keranjang[existingIndex].qty = (keranjang[existingIndex].qty || 1) + 1;
+                keranjang[existingIndex].qty = (keranjang[existingIndex].qty || 1) + qty;
             } else {
                 keranjang.push({
                     namaItem: namaItem,
@@ -1370,12 +1525,13 @@
                     hargaIDR: hargaIDR,
                     hargaUSD: hargaUSD,
                     gambar: gambar,
-                    qty: 1
+                    qty: qty
                 });
             }
 
             localStorage.setItem('waypoint_cart', JSON.stringify(keranjang));
             updateCartCount();
+
         }
 
         const totalQtyAwal = keranjang.reduce((sum, item) => sum + (item.qty || 1), 0);
